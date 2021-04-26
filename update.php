@@ -5,6 +5,10 @@
  *
  * example run code with secret:
  * curl 'https://127.0.0.1/update.php?domain=home.domena.pl&secret=home.domena.pl%3Av%2Fq8nVsPx7%2BsPhX6%2BN5lcg%3D%3D'
+ *
+ * if you want to set a specific IP address (ip param):
+ * curl 'https://127.0.0.1/update.php?domain=home.domena.pl&ip=8.8.8.8&secret=home.domena.pl%3Av%2Fq8nVsPx7%2BsPhX6%2BN5lcg%3D%3D'
+ *
  **/
 
 /** VARIABLES **/
@@ -124,7 +128,12 @@ function getActualDomainIP(string $domain, string $serverDns): ?string
     return $ip;
 }
 
-function getUserIP()
+/**
+ * Sprawdzamy adres IP requestu (IP Uzytkownika)
+ *
+ * @return string|null
+ */
+function getUserIP(): ?string
 {
     if (isset($_SERVER["HTTP_CF_CONNECTING_IP"])) {
         $_SERVER['REMOTE_ADDR'] = $_SERVER["HTTP_CF_CONNECTING_IP"];

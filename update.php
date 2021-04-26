@@ -83,7 +83,6 @@ function updateDomain(string $domain, string $secret, string $ip, string $actual
         NULL,
         NULL
     );
-
     fwrite($pipes[0], 'server ' . $serverDns . "\n");
     fwrite($pipes[0], 'update delete ' . $domain . ". A\n");
     fwrite($pipes[0], 'update add ' . $domain . '. 2 A ' . $ip . "\n\n");
@@ -92,7 +91,6 @@ function updateDomain(string $domain, string $secret, string $ip, string $actual
     echo stream_get_contents($pipes[1]) . PHP_EOL;
 
     $return = proc_close($process);
-
     if ($return == 0) {
         return $ip;
     }

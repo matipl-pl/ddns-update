@@ -72,15 +72,17 @@ function updateDomain(string $domain, string $secret, string $ip, string $actual
         return null;
     }
 
-    $descriptorspec = [
-        0 => ['pipe', 'r'],
-        1 => ['pipe', 'w'],
-    ];
-    if ($secret) {
-        $process = proc_open('nsupdate -y hmac-md5:' . $secret, $descriptorspec, $pipes, NULL, NULL);
-    } else {
-        $process = proc_open('nsupdate', $descriptorspec, $pipes, NULL, NULL);
-    }
+    $nsUpdateParam = $secret ? ' -y hmac-md5:' . $secret : '';
+    $process = proc_open(
+        'nsupdate' . $nsUpdateParam,
+        [
+            0 => ['pipe', 'r'],
+            1 => ['pipe', 'w'],
+        ],
+        $pipes,
+        NULL,
+        NULL
+    );
 
     fwrite($pipes[0], 'server ' . $serverDns . "\n");
     fwrite($pipes[0], 'update delete ' . $domain . ". A\n");

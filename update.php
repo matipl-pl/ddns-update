@@ -1,13 +1,14 @@
 <?php
 /** EXAMPLE OF USE **/
+
 /** prepare secret parameter:
  * php -r "echo rawurlencode('home.domena.pl:v/q8nVsPx7+sPhX6+N5lcg==') . PHP_EOL;"
  *
  * example run code with secret:
  * curl 'https://127.0.0.1/update.php?domain=home.domena.pl&secret=home.domena.pl%3Av%2Fq8nVsPx7%2BsPhX6%2BN5lcg%3D%3D'
  *
- * if you want to set a specific IP address (ip param):
- * curl 'https://127.0.0.1/update.php?domain=home.domena.pl&ip=8.8.8.8&secret=home.domena.pl%3Av%2Fq8nVsPx7%2BsPhX6%2BN5lcg%3D%3D'
+ * if you want to set a specific IP address (address param):
+ * curl 'https://127.0.0.1/update.php?domain=home.domena.pl&address=8.8.8.8&secret=home.domena.pl%3Av%2Fq8nVsPx7%2BsPhX6%2BN5lcg%3D%3D'
  *
  **/
 
@@ -121,7 +122,7 @@ function getActualDomainIP(string $domain, string $serverDns): ?string
     $ip = $matches[1] ?? null;
     proc_close($process);
     if (!filter_var($ip, FILTER_VALIDATE_IP)) {
-        echo 'Wrong IP User: ' . $ip . PHP_EOL;
+        echo 'Wrong actual IP: ' . $ip . PHP_EOL;
         die();
     }
 
@@ -152,9 +153,7 @@ function getUserIP(): ?string
     }
 
     if (!filter_var($ip, FILTER_VALIDATE_IP)) {
-        echo 'Wrong IP User: ' . $ip . PHP_EOL;
-        die();
+        return null;
     }
-
     return $ip;
 }
